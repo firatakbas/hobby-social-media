@@ -51,7 +51,7 @@
                         <span class="text-xs text-gray-500">{{ $post->created_at->diffForHumans() }}</span>
                     </div>
                 </div>
-                @if($post->user_id == auth()->user()->id)
+                @if(auth()->check() && $post->user_id == auth()->user()->id)
                     <div x-data="{ open: false }" class="relative inline-block text-left">
                         <button @click="open = !open" class="text-gray-400 hover:text-gray-600 focus:outline-none">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -77,7 +77,6 @@
                         </div>
                     </div>
                 @endif
-
             </div>
 
             <!-- İçerik Metni -->

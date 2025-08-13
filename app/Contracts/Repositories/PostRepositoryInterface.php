@@ -4,11 +4,15 @@ namespace App\Contracts\Repositories;
 
 use App\Models\Post;
 
-interface PostRepository
+interface PostRepositoryInterface
 {
-    public function allUserPosts();
+    public function allPosts();
 
     public function create(array $data);
 
+    public function update(array $data);
+
     public function delete(Post $post);
+
+    public function getById(int $id);
 }

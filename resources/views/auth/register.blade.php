@@ -24,7 +24,7 @@
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
         <h1 class="text-center font-bold text-xl">Kayıt ol</h1>
 
-        <form class="space-y-4" action="" method="post">
+        <form class="space-y-4" action="{{ route('register.store') }}" method="post">
             @csrf
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Ad -->

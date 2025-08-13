@@ -2,15 +2,15 @@
 
 namespace App\Repositories;
 
-use App\Contracts\Repositories\PostRepository as PostRepositoryContract;
+use App\Contracts\Repositories\PostRepositoryInterface;
 use App\Models\Post;
 use App\Models\User;
 
-class PostRepository implements PostRepositoryContract
+class PostRepository implements PostRepositoryInterface
 {
-    public function allUserPosts()
+    public function allPosts()
     {
-        return Post::where('postable_type', User::class)->orderBy('id', 'desc')->get();
+        return Post::where('postable_type', User::class)->orderBy('id', 'desc')->paginate(20);
     }
 
     public function create(array $data)
@@ -20,6 +20,17 @@ class PostRepository implements PostRepositoryContract
 
     public function delete(Post $post)
     {
+        $post = $this->getById($post->id);
         return $post->delete();
+    }
+
+    public function update(array $data)
+    {
+        // TODO: Implement update() method.
+    }
+
+    public function getById(int $id)
+    {
+        return Post::where('id', $id)->first();
     }
 }

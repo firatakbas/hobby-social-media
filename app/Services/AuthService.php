@@ -2,17 +2,17 @@
 
 namespace App\Services;
 
-use App\Contracts\Repositories\UserRepository;
+use App\Contracts\Repositories\ProfileRepositoryInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-class UserService
+class AuthService
 {
 
-    public function __construct(private UserRepository $userRepository)
+    public function __construct(private ProfileRepositoryInterface $userRepository)
     {
     }
 
@@ -21,14 +21,23 @@ class UserService
         return $this->userRepository->all();
     }
 
-    public function create(array $data)
+    /**
+     * Yeni bir kullanıcı oluşturur
+     *
+     * @throws \Throwable
+     *
+     * @param array $data
+     *
+     * @return User
+     */
+    public function create(array $data): User
     {
         return DB::transaction(function () use ($data) {
             $data['username'] = Str::slug($data['username'], '');
             $data['password'] = Hash::make($data['password']);
 
-
-            if (User::where('username', $data['username'])->exists()) {
+            // Aynı isimde kullanıcı var mı? kontrol eder varsa hata fırlatır.
+            if ($this->userRepository->existsByUsername($data['username'])) {
                 throw new \Exception('Bu kullanıcı adı zaten alınmış. Lütfen farklı bir kullanıcı adı deneyin.');
             }
 
@@ -42,22 +51,13 @@ class UserService
         });
     }
 
-    public function update(array $data, User $user)
+    public function getById(int $id): User
     {
-        $data['username'] = Str::slug($data['username'], '');
-
-        if (!empty($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
-        }
-        else {
-            unset($data['password']);
-        }
-
-        return $this->userRepository->update($data, $user);
+        return $this->userRepository->getById($id);
     }
 
-    public function delete(User $user)
+    public function getByUsername(string $username)
     {
-        return $this->userRepository->delete($user);
+        return $this->userRepository->getByUsername($username);
     }
 }

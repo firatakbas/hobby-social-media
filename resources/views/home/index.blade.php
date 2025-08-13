@@ -1,6 +1,7 @@
 @extends('layout.app')
 
 @section('content')
+
     <form action="{{ route('post.store.user') }}" method="post">
         @csrf
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
@@ -13,6 +14,11 @@
                     class="flex-1 bg-gray-100 text-sm rounded-full px-4 py-2 focus:outline-none"
                     name="content"
                 >
+            </div>
+            <div>
+                @error('content')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <hr class="my-2">
@@ -37,7 +43,6 @@
             </div>
         </div>
     </form>
-
 
     @foreach($posts as $post)
         <div class="bg-white rounded-xl shadow-sm border border-gray-200">
@@ -96,4 +101,6 @@
             </div>
         </div>
     @endforeach
+
+    {{ $posts->links('pagination::simple-tailwind') }}
 @endsection

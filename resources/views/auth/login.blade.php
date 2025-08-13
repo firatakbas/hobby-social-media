@@ -3,7 +3,7 @@
 @section('content')
     <div class="bg-[#FFFFFF] p-4 space-y-4 rounded-xl">
         <h1 class="text-center font-bold text-xl">Giriş Yap</h1>
-        <form class="space-y-4" action="{{ route('login') }}" method="post">
+        <form class="space-y-4" action="{{ route('login.process') }}" method="post">
             @csrf
             <!-- Diğer alanlar alt alta -->
             <div class="mt-4">

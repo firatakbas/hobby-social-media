@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Group;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -12,12 +15,12 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            \App\Contracts\Repositories\UserRepository::class,
-            \App\Repositories\UserRepository::class
+            \App\Contracts\Repositories\ProfileRepositoryInterface::class,
+            \App\Repositories\ProfileRepository::class
         );
 
         $this->app->bind(
-            \App\Contracts\Repositories\PostRepository::class,
+            \App\Contracts\Repositories\PostRepositoryInterface::class,
             \App\Repositories\PostRepository::class
         );
     }

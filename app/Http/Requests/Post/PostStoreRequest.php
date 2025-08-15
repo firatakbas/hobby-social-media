@@ -23,6 +23,7 @@ class PostStoreRequest extends FormRequest
     {
         return [
             'content' => 'required|max:255',
+            'group_id' => 'nullable|exists:groups,id',
         ];
     }
 
@@ -31,6 +32,7 @@ class PostStoreRequest extends FormRequest
         return [
             'content.required' => 'İçerik zorunlu',
             'content.max'      => "İçerik zorunlu maksimum 255 karakter",
+            'group_id.exists'  => 'Geçersiz Grup',
         ];
     }
 }

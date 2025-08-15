@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\StoreRequest;
-use App\Services\ProfileService;
+use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class AuthController extends Controller
 {
-    public function __construct(private ProfileService $userService)
+    public function __construct(private UserService $service)
     {
     }
 
@@ -38,9 +38,10 @@ class AuthController extends Controller
     public function store(StoreRequest $request): RedirectResponse
     {
         try {
-            $this->userService->create($request->validated());
-            return redirect()->route('home.index')->with('success', 'Kaydınız başarıyla oluşturuldu');
-        } catch (\Exception $exception) {
+            $this->service->create($request->validated());
+            return redirect()->route('feed.index')->with('success', 'Kaydınız başarıyla oluşturuldu');
+        }
+        catch (\Exception $exception) {
             return back()->withInput()->with('error', $exception->getMessage());
         }
     }
@@ -66,7 +67,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('home.index');
+            return redirect()->route('feed.index');
         }
         else {
             return redirect()->back()->with('error', 'Yanlış kullanıcı adı veya şifre');
@@ -80,10 +81,12 @@ class AuthController extends Controller
      */
     public function logout(): RedirectResponse
     {
-        Auth::logout();
-        session()->invalidate();
-        session()->regenerateToken();
+        if (Auth::check()) {
+            Auth::logout();
+            session()->invalidate();
+            session()->regenerateToken();
+        }
 
-        return redirect()->route('home.index');
+        return redirect()->route('feed.index');
     }
 }

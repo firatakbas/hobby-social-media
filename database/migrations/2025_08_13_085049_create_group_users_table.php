@@ -11,11 +11,8 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('group_users', function (Blueprint $table) {
-            $table->unsignedBigInteger('group_id');
-            $table->unsignedBigInteger('user_id');
-
-            $table->foreign('group_id')->references('id')->on('groups');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('group_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
 
             $table->timestamps();
         });

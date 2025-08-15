@@ -15,6 +15,6 @@ class HomeController extends Controller
     public function index(): View
     {
         $posts = $this->postService->all();
-        return view('home.index', compact('posts'));
+        return view('feed.index', compact('posts'));
     }
 }

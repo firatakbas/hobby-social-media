@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Group extends Model
 {
+    protected $fillable = [
+        'name',
+        'description',
+        'user_id',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

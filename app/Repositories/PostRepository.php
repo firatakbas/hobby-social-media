@@ -4,13 +4,14 @@ namespace App\Repositories;
 
 use App\Contracts\Repositories\PostRepositoryInterface;
 use App\Models\Post;
-use App\Models\User;
 
 class PostRepository implements PostRepositoryInterface
 {
     public function allPosts()
     {
-        return Post::where('postable_type', User::class)->orderBy('id', 'desc')->paginate(20);
+        return Post::with(['postable', 'user'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
     }
 
     public function create(array $data)
@@ -20,7 +21,6 @@ class PostRepository implements PostRepositoryInterface
 
     public function delete(Post $post)
     {
-        $post = $this->getById($post->id);
         return $post->delete();
     }
 
@@ -32,5 +32,23 @@ class PostRepository implements PostRepositoryInterface
     public function getById(int $id)
     {
         return Post::where('id', $id)->first();
+    }
+
+    public function getGroupPosts(int $groupId)
+    {
+        return Post::where('postable_type', \App\Models\Group::class)
+            ->where('postable_id', $groupId)
+            ->with(['user', 'postable'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+    }
+
+    public function getUserPosts(int $userId)
+    {
+        return Post::where('postable_type', \App\Models\User::class)
+            ->where('postable_id', $userId)
+            ->with(['user', 'postable'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
     }
 }

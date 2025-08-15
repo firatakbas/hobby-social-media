@@ -15,11 +15,11 @@ return new class extends Migration {
             $table->id();
 
             // Grubu kim kurdu
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
 
-            $table->unsignedBigInteger('categories_id');
+            //$table->unsignedBigInteger('categories_id');
             // Grub adı
-            $table->string('title');
+            $table->string('name');
 
             // Grub slug
             $table->string('slug');
@@ -31,13 +31,13 @@ return new class extends Migration {
             $table->string('image')->nullable();
 
             // Grub herkese açık mı?
-            $table->boolean('public')->default(PublishedStatus::HIDDEN);
+            $table->enum('public', [PublishedStatus::PUBLISHED->value, PublishedStatus::HIDDEN->value])->default(PublishedStatus::HIDDEN->value);
 
             // Grub yayında mı
-            $table->boolean('status')->default(PublishedStatus::REJECTED);
+            $table->enum('status', [PublishedStatus::PUBLISHED->value, PublishedStatus::REJECTED->value])->default(PublishedStatus::REJECTED->value);
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('categories_id')->references('id')->on('categories');
+            //$table->foreign('user_id')->references('id')->on('users');
+            //$table->foreign('categories_id')->references('id')->on('categories');
             $table->timestamps();
         });
     }

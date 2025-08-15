@@ -3,22 +3,13 @@
 namespace App\Contracts\Repositories;
 
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
 
 interface ProfileRepositoryInterface
 {
-    public function all();
+    public function update(array $data, User $user): bool;
 
-    public function authUser();
+    public function updateProfileImage(string $path, User $user): bool;
 
-    public function update(array $data);
-
-    public function updateProfile(array $data);
-
-    public function getById(int $id);
-
-    public function getByEmail(string $email);
-
-    public function getByUsername(string $username);
-
-    public function existsByUsername(string $username);
+    public function updateProfile(array $data, User $user): bool;
 }

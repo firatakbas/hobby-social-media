@@ -15,4 +15,8 @@ interface PostRepositoryInterface
     public function delete(Post $post);
 
     public function getById(int $id);
+
+    public function getGroupPosts(int $groupId);
+
+    public function getUserPosts(int $userId);
 }

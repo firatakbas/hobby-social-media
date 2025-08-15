@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Profile extends Model
 {
-    public $fillable = [
+    protected $fillable = [
         'user_id',
         'instagram',
         'twitter',
